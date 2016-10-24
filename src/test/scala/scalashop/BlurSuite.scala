@@ -88,4 +88,19 @@ class BlurSuite extends FunSuite {
     check(2, 2, 5)
     check(3, 2, 6)
   }
+
+  test("List zipper should zip the range list properly") {
+    val elements: List[Int] = List(1, 2, 3, 4, 5)
+    val range = 0 to elements.size by 2
+    val expectedList = List((0,2), (2,4), (4,5))
+
+    assert(ListZipper.zipElements(5, 2) == expectedList)
+
+    val elements2: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    val range2 = 0 to elements2.size by 3
+    val expectedList2 = List((0,3), (3,6), (6,9), (9,10))
+
+    assert(ListZipper.zipElements(10, 3) == expectedList2)
+  }
 }
+

@@ -65,4 +65,13 @@ package object scalashop {
     }
     rgba(accR / pixelProcessed, accG / pixelProcessed, accB / pixelProcessed, accA / pixelProcessed)
   }
+
+
+  object ListZipper {
+
+    def zipElements(numElements: Int, numTasks: Int) = {
+      val range = 0 to numElements by numTasks
+      range.zip(range.tail :+ numElements).toList
+    }
+  }
 }
