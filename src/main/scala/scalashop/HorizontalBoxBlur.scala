@@ -42,11 +42,12 @@ object HorizontalBoxBlur {
    *  Within each row, `blur` traverses the pixels by going from left to right.
    */
   def blur(src: Img, dst: Img, from: Int, end: Int, radius: Int): Unit = {
-    for (row <- 0 to src.width - 1) {
-      for (column <- from to end - 1) {
-        val blurredValue = boxBlurKernel(src, row, column, radius)
-        dst.update(row, column, blurredValue)
-      }
+    for(
+      x <- 0 until src.width;
+      y <- from until end;
+      if y >= 0 && y < src.height
+    ) yield {
+      dst.update(x, y, boxBlurKernel(src, x, y, radius))
     }
   }
 

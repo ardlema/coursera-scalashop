@@ -43,11 +43,12 @@ object VerticalBoxBlur {
    *  bottom.
    */
   def blur(src: Img, dst: Img, from: Int, end: Int, radius: Int): Unit = {
-    for (column <- 0 to src.height - 1) {
-      for (row <- from to end - 1) {
-        val blurredValue = boxBlurKernel(src, row, column, radius)
-        dst.update(row, column, blurredValue)
-      }
+    for(
+      row <- from until end;
+      column <- 0 until src.height;
+      if row >= 0 && row < src.width
+    ) yield {
+      dst.update(row, column, boxBlurKernel(src, row, column, radius))
     }
   }
 
