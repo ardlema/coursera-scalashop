@@ -37,12 +37,12 @@ object HorizontalBoxBlurRunner {
 object HorizontalBoxBlur {
 
   /** Blurs the rows of the source image `src` into the destination image `dst`,
-   *  starting with `from` and ending with `end` (non-inclusive).
-   *
-   *  Within each row, `blur` traverses the pixels by going from left to right.
-   */
+    * starting with `from` and ending with `end` (non-inclusive).
+    *
+    * Within each row, `blur` traverses the pixels by going from left to right.
+    */
   def blur(src: Img, dst: Img, from: Int, end: Int, radius: Int): Unit = {
-    for(
+    for (
       x <- 0 until src.width;
       y <- from until end;
       if y >= 0 && y < src.height
@@ -52,15 +52,20 @@ object HorizontalBoxBlur {
   }
 
   /** Blurs the rows of the source image in parallel using `numTasks` tasks.
-   *
-   *  Parallelization is done by stripping the source image `src` into
-   *  `numTasks` separate strips, where each strip is composed of some number of
-   *  rows.
-   */
+    *
+    * Parallelization is done by stripping the source image `src` into
+    * `numTasks` separate strips, where each strip is composed of some number of
+    * rows.
+    */
   def parBlur(src: Img, dst: Img, numTasks: Int, radius: Int): Unit = {
-    val separateStrips = ListZipper.zipElements(src.width, numTasks)
-    val tasks = for (s <- separateStrips) yield (task {blur(src, dst, s._1, s._2, radius)})
-    for (t <- tasks) t.join()
-  }
+    val separateStrips = 0 to src.height by (src.height / numTasks max 1)
 
+    separateStrips.zip(separateStrips.tail)
+      .map { case (from, end) =>
+        task[Unit] {
+          blur(src, dst, from, end, radius)
+        }
+      }
+      .foreach(_.join())
+  }
 }
