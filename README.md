@@ -1,7 +1,5 @@
 # Parallel Box Blur Filter
 
-You will find the starting files here: http://chara.epfl.ch/~dockermoocs/parprog1/scalashop.zip
-
 In this assignment, we will implement a box blur filter, used in applications like Adobe® PhotoShop® to blur images. For the purposes of this assignment, a filter is an algorithm that takes an input image and transforms it in some way into an output image. The box blur filter outputs an image in which every pixel has an average value of the surrounding pixels from the original image. The box blur filter is an example of an embarrasingly parallel problem -- no or very little effort is required to separate it into parallel tasks. Every pixel of the output image can be computed independently of the other pixels, and in parallel.
 
 We will proceed in four steps. First, we will implement the kernel of the box blur filter, a method used to compute a single pixel of the output image. Then we will implement two versions of the parallel box blur, and measure the performance difference. Finally, we will try out our parallel box blur implementations on real images, using ScalaShop -- the image manipulation tool that would impress even the Adobe® folks.
